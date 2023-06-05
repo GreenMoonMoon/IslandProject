@@ -1,0 +1,38 @@
+[gd_scene load_steps=8 format=3 uid="uid://elgiwch2f64y"]
+
+[ext_resource type="Script" path="res://debug/boat/boat_controller.gd" id="1_vo478"]
+[ext_resource type="Shader" path="res://debug/boat/wireframe.gdshader" id="2_mrhs6"]
+[ext_resource type="Script" path="res://debug/boat/simple_camera.gd" id="2_s4whc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ap3pr"]
+render_priority = 0
+shader = ExtResource("2_mrhs6")
+shader_parameter/color = Color(0, 0.639216, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_l0ers"]
+material = SubResource("ShaderMaterial_ap3pr")
+size = Vector3(1.5, 0.5, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p2870"]
+size = Vector3(1.5, 0.5, 3)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mogp8"]
+
+[node name="Boat" type="RigidBody3D"]
+script = ExtResource("1_vo478")
+
+[node name="HullMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_l0ers")
+
+[node name="HullCollider" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_p2870")
+
+[node name="Camera" type="Node3D" parent="."]
+top_level = true
+script = ExtResource("2_s4whc")
+
+[node name="Camera3D" type="Camera3D" parent="Camera"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 5, 8)
+
+[node name="WaterPatch" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_mogp8")

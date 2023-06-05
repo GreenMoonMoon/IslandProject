@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://bx8cta5525qbi"]
+
+[ext_resource type="Shader" path="res://debug/waves/grestner_waves.gdshader" id="1_pqg3x"]
+[ext_resource type="PackedScene" uid="uid://elgiwch2f64y" path="res://debug/waves/boat/boat1.tscn" id="2_iq2jv"]
+[ext_resource type="Script" path="res://debug/esc_quit.gd" id="3_c276f"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kvlvf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_niwne"]
+sky_material = SubResource("ProceduralSkyMaterial_kvlvf")
+
+[sub_resource type="Environment" id="Environment_op528"]
+background_mode = 2
+sky = SubResource("Sky_niwne")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e35em"]
+render_priority = 0
+shader = ExtResource("1_pqg3x")
+shader_parameter/albedo = Color(0, 0.592157, 1, 1)
+shader_parameter/roughness = 0.196
+shader_parameter/specular = 0.5
+shader_parameter/wave_a = Quaternion(1, 0, 0.75, 24)
+shader_parameter/wave_b = Vector4(0.9, 0.1, 0.75, 60)
+shader_parameter/wave_c = Vector4(0.5, 0.5, 0.5, 80)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3f4re"]
+material = SubResource("ShaderMaterial_e35em")
+size = Vector2(128, 128)
+subdivide_width = 127
+subdivide_depth = 127
+
+[node name="Scene" type="Node3D"]
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_op528")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.353556, 0.353556, 0, 0.707107, 0.707107, -0.500003, 0.612371, -0.612371, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 250.0
+
+[node name="Water" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_3f4re")
+
+[node name="Boat" parent="." instance=ExtResource("2_iq2jv")]
+
+[node name="EscQuit" type="Node" parent="."]
+script = ExtResource("3_c276f")

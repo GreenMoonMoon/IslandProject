@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://dckmx1b21t6qh"]
+
+[ext_resource type="Shader" path="res://debug/waves/texture_wave.gdshader" id="1_m4w6i"]
+[ext_resource type="Texture2D" uid="uid://mr1d6i17kjrp" path="res://debug/waves/noise_waves.png" id="2_518a7"]
+[ext_resource type="Script" path="res://debug/waves/texture_buoyancy.gd" id="3_68stb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3f6dl"]
+render_priority = 0
+shader = ExtResource("1_m4w6i")
+shader_parameter/albedo = Color(0, 0.509804, 1, 1)
+shader_parameter/roughness = 0.155
+shader_parameter/specular = 0.5
+shader_parameter/amplitude = 9.847
+shader_parameter/wave_texture = ExtResource("2_518a7")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pjx0q"]
+material = SubResource("ShaderMaterial_3f6dl")
+size = Vector2(128, 128)
+subdivide_width = 127
+subdivide_depth = 127
+
+[sub_resource type="BoxMesh" id="BoxMesh_kpnlt"]
+size = Vector3(2, 2, 2)
+
+[node name="Scene" type="Node3D"]
+
+[node name="Water" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_pjx0q")
+
+[node name="Boat" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+mesh = SubResource("BoxMesh_kpnlt")
+script = ExtResource("3_68stb")

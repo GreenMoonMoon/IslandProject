@@ -1,0 +1,65 @@
+[gd_scene load_steps=11 format=3 uid="uid://chs0rja2g7ri2"]
+
+[ext_resource type="PackedScene" uid="uid://elgiwch2f64y" path="res://debug/boat/boat1.tscn" id="1_26v8r"]
+[ext_resource type="Script" path="res://debug/esc_quit.gd" id="2_2xuoq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7n3pq"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_3jw0u"]
+sky_material = SubResource("ProceduralSkyMaterial_7n3pq")
+
+[sub_resource type="Environment" id="Environment_hhx6q"]
+background_mode = 2
+sky = SubResource("Sky_3jw0u")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ucpgr"]
+albedo_color = Color(0.529412, 0.823529, 1, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_dbwe7"]
+material = SubResource("StandardMaterial3D_ucpgr")
+size = Vector2(64, 64)
+subdivide_width = 63
+subdivide_depth = 63
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0w8ds"]
+albedo_color = Color(0.835294, 0.72549, 0.513726, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_h3eyr"]
+material = SubResource("StandardMaterial3D_0w8ds")
+size = Vector2(64, 64)
+subdivide_width = 63
+subdivide_depth = 63
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ugj0d"]
+
+[node name="Scene" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hhx6q")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.353556, 0.353556, 0, 0.707107, 0.707107, -0.500003, 0.612371, -0.612371, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 250.0
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+mesh = SubResource("PlaneMesh_dbwe7")
+
+[node name="SeaFloor" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_h3eyr")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SeaFloor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SeaFloor/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_ugj0d")
+
+[node name="Boat" parent="." instance=ExtResource("1_26v8r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+
+[node name="EscQuit" type="Node" parent="."]
+script = ExtResource("2_2xuoq")
