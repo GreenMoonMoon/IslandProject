@@ -1,7 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://chs0rja2g7ri2"]
+[gd_scene load_steps=15 format=3 uid="uid://chs0rja2g7ri2"]
 
-[ext_resource type="PackedScene" uid="uid://elgiwch2f64y" path="res://debug/boat/boat1.tscn" id="1_26v8r"]
-[ext_resource type="Script" path="res://debug/esc_quit.gd" id="2_2xuoq"]
+[ext_resource type="PackedScene" uid="uid://elgiwch2f64y" path="res://debug/boat/boat1.tscn" id="1_3c45e"]
+[ext_resource type="Script" path="res://debug/esc_quit.gd" id="2_ffq87"]
+[ext_resource type="PackedScene" uid="uid://7ynp6ybamny8" path="res://debug/character/character_test1.tscn" id="3_kgsaq"]
+[ext_resource type="PackedScene" uid="uid://mvk1xfotsmqq" path="res://debug/camera_test1.tscn" id="4_pqev3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7n3pq"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -17,7 +19,8 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ucpgr"]
-albedo_color = Color(0.529412, 0.823529, 1, 1)
+transparency = 1
+albedo_color = Color(0.529412, 0.823529, 1, 0.25098)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_dbwe7"]
 material = SubResource("StandardMaterial3D_ucpgr")
@@ -36,7 +39,16 @@ subdivide_depth = 63
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ugj0d"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_fp2dc"]
+size = Vector3(30, 4, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ofjkw"]
+size = Vector3(30, 4, 30)
+
 [node name="Scene" type="Node3D"]
+
+[node name="EscQuit" type="Node" parent="."]
+script = ExtResource("2_ffq87")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_hhx6q")
@@ -58,8 +70,21 @@ mesh = SubResource("PlaneMesh_h3eyr")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SeaFloor/StaticBody3D"]
 shape = SubResource("WorldBoundaryShape3D_ugj0d")
 
-[node name="Boat" parent="." instance=ExtResource("1_26v8r")]
+[node name="Boat" parent="." instance=ExtResource("1_3c45e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+speed = null
 
-[node name="EscQuit" type="Node" parent="."]
-script = ExtResource("2_2xuoq")
+[node name="Character" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("3_kgsaq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0128, 7, -21.9192)
+camera = NodePath("../Camera")
+
+[node name="Camera" parent="." instance=ExtResource("4_pqev3")]
+
+[node name="Dock" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -27.9)
+mesh = SubResource("BoxMesh_fp2dc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Dock"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Dock/StaticBody3D"]
+shape = SubResource("BoxShape3D_ofjkw")

@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://vyxp7ysp862h"]
+
+[ext_resource type="Script" path="res://debug/buoyancy/volumetric_buoyancy.gd" id="1_y6x4i"]
+[ext_resource type="Script" path="res://debug/buoyancy/buoyancy_mesh.gd" id="2_ekr2l"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_djqfw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jfje2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ad7dp"]
+transparency = 1
+albedo_color = Color(0, 0.501961, 1, 0.25098)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hmyy2"]
+material = SubResource("StandardMaterial3D_ad7dp")
+size = Vector2(64, 64)
+
+[node name="Scene" type="Node3D"]
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+script = ExtResource("1_y6x4i")
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_djqfw")
+script = ExtResource("2_ekr2l")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_jfje2")
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+mesh = SubResource("PlaneMesh_hmyy2")
