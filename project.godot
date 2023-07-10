@@ -11,9 +11,14 @@ config_version=5
 [application]
 
 config/name="IslandProject"
+config/tags=PackedStringArray("tests")
 run/main_scene="res://debug/sea_test1.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/terrain/plugin.cfg")
 
 [input]
 

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bu5judbo1r7cy"]
+
+[ext_resource type="Shader" path="res://debug/waves/waves_test1.gdshader" id="1_iyvry"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kkl4j"]
+render_priority = 0
+shader = ExtResource("1_iyvry")
+shader_parameter/water = Color(0.305882, 0.521569, 1, 1)
+shader_parameter/amplitude = 6.22
+shader_parameter/wave_length = 0.15
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_unass"]
+size = Vector2(256, 256)
+subdivide_width = 255
+subdivide_depth = 255
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_kkl4j")
+mesh = SubResource("PlaneMesh_unass")
